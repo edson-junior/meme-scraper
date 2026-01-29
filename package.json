@@ -13,5 +13,12 @@
   "packageManager": "pnpm@10.26.0",
   "dependencies": {
     "cheerio": "^1.2.0"
+  },
+  "devDependencies": {
+    "@types/node": "^25.1.0",
+    "eslint": "^9.39.2",
+    "eslint-config-upleveled": "^9.4.4",
+    "prettier": "^3.8.1",
+    "typescript": "^5.9.3"
   }
 }
