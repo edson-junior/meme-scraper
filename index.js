@@ -11,6 +11,11 @@ if (!fs.existsSync(memesDir)) {
   fs.mkdirSync(memesDir);
 }
 
+/**
+ * scrape the website for images
+ *
+ * @returns {Promise<void>}
+ */
 async function scrape() {
   try {
     const response = await fetch(url);
@@ -34,15 +39,23 @@ async function scrape() {
       images.push(src);
     });
 
-    // download all images in the `memes` folder
-    images.forEach((image, index) => {
-      downloadImage(image, index + 1);
-    });
+    // iterate over the images and download them
+    for (let index = 0; index < images.length; index++) {
+      await downloadImage(images[index], index + 1);
+    }
   } catch (error) {
-    throw new Error(`we're having difficulties fetching those images ${error}`);
+    throw new Error("we're having difficulties fetching those images!", error);
   }
 }
 
+/**
+ * save images in the memes folder
+ *
+ * @param {*} image
+ * @param {*} index
+ *
+ * @returns {Promise<void>}
+ */
 async function downloadImage(image, index) {
   const response = await fetch(image);
   const data = await response.arrayBuffer();
@@ -51,6 +64,7 @@ async function downloadImage(image, index) {
     index <= 9 ? `0${index}.jpg` : `${index}.jpg`,
   );
 
+  // write the image to the filesystem
   fs.writeFile(imagePath, Buffer.from(data), (err) => {
     if (err) {
       throw new Error(`we're having difficulties creating those images ${err}`);
@@ -60,4 +74,4 @@ async function downloadImage(image, index) {
   });
 }
 
-scrape();
+await scrape();
