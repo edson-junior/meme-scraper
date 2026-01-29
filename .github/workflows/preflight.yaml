@@ -1,0 +1,13 @@
+name: Preflight
+on: [push]
+
+jobs:
+  preflight:
+    name: Preflight
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Pull latest Preflight image
+        run: docker pull ghcr.io/upleveled/preflight
+      - name: Run Preflight
+        run: docker run ghcr.io/upleveled/preflight https://github.com/${{ github.repository}} ${{ github.ref_name }}
