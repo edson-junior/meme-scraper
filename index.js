@@ -70,7 +70,13 @@ async function downloadImage(image, index) {
       throw new Error(`we're having difficulties creating those images`, error);
     }
 
-    console.log('Image created!');
+    console.log(
+      `Image ${index <= 9 ? `0${index}.jpg` : `${index}.jpg`} was created!`,
+    );
+
+    if (index === 10) {
+      console.log('All images have been created!');
+    }
   });
 }
 
