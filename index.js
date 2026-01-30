@@ -65,9 +65,9 @@ async function downloadImage(image, index) {
   );
 
   // write the image to the filesystem
-  fs.writeFile(imagePath, Buffer.from(data), (err) => {
-    if (err) {
-      throw new Error(`we're having difficulties creating those images ${err}`);
+  fs.writeFile(imagePath, Buffer.from(data), (error) => {
+    if (error) {
+      throw new Error(`we're having difficulties creating those images`, error);
     }
 
     console.log('Image created!');
