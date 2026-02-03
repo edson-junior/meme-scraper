@@ -22,10 +22,8 @@ async function scrape() {
 
     // we're not interested in proceeding if there's an error requesting the website
     if (response.status !== 200) {
-      throw new Error(
-        'the website seems to not be available!',
-        response.statusText,
-      );
+      console.error(response.status, response.statusText);
+      throw new Error('Failed to fetch data');
     }
 
     const html = await response.text();
@@ -47,15 +45,15 @@ async function scrape() {
       await downloadImage(images[index], index + 1);
     }
   } catch (error) {
-    throw new Error("we're having difficulties fetching those images!", error);
+    throw error;
   }
 }
 
 /**
  * save images in the memes folder
  *
- * @param {*} image
- * @param {*} index
+ * @param {String} image
+ * @param {Number} index
  *
  * @returns {Promise<void>}
  */
@@ -70,7 +68,7 @@ async function downloadImage(image, index) {
   // write the image to the filesystem
   fs.writeFile(imagePath, Buffer.from(data), (error) => {
     if (error) {
-      throw new Error(`we're having difficulties creating those images`, error);
+      throw error;
     }
 
     console.log(
