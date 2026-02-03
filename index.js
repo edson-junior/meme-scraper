@@ -22,19 +22,22 @@ async function scrape() {
 
     // we're not interested in proceeding if there's an error requesting the website
     if (response.status !== 200) {
-      throw new Error('the website seems to not be available!');
+      throw new Error(
+        'the website seems to not be available!',
+        response.statusText,
+      );
     }
 
     const html = await response.text();
     const $ = cheerio.load(html);
 
     // create an array of the 10 first images
-    $('#images > div').each((index, item) => {
+    $('#images > div').each((index, imageWrapper) => {
       if (index === 10) {
         return false;
       }
 
-      const src = $(item).find('img').attr('src');
+      const src = $(imageWrapper).find('img').attr('src');
 
       images.push(src);
     });
@@ -73,10 +76,6 @@ async function downloadImage(image, index) {
     console.log(
       `Image ${index <= 9 ? `0${index}.jpg` : `${index}.jpg`} was created!`,
     );
-
-    if (index === 10) {
-      console.log('All images have been created!');
-    }
   });
 }
 
